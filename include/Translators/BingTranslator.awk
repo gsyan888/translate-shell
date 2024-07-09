@@ -2,7 +2,7 @@
 # BingTranslator.awk                                               #
 ####################################################################
 #
-# Last Updated: 8 Jun 2022
+# Last Updated: 10 July 2024
 BEGIN { provides("bing") }
 
 function bingInit() {
@@ -80,11 +80,97 @@ function bingSetup(    ast, content, cookie, group, header, isBody, key,
     }
 }
 
+# Since 2024.07.09
+# <https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts>
+function voiceName(code, gender) {
+    if(code!="en-GB" && code!="fr-CA" && code!="pt-PT" && code!="zh-Hant" && code!="zh-TW" && code!="zh-HK" && code!="zh-Hans" && code!="zh-CN") {
+        split(code, group, "-")		
+		if(group[1]!="") code = group[1]
+    }
+    switch (code) {
+        case "af": return gender=="female" ? "af-ZA-AdriNeural" : "af-ZA-WillemNeural"
+        case "am": return gender=="female" ? "am-ET-MekdesNeural" : "am-ET-AmehaNeural"
+        case "ar": return gender=="female" ? "r-SA-ZariyahNeural" : "ar-SA-HamedNeural"
+        case "bn": return gender=="female" ? "bn-IN-TanishaaNeural" : "bn-IN-BashkarNeural"
+        case "bg": return gender=="female" ? "bg-BG-KalinaNeural" : "bg-BG-BorislavNeural"
+        case "ca": return gender=="female" ? "ca-ES-JoanaNeural" : "ca-ES-EnricNeural"
+        case "cs": return gender=="female" ? "cs-CZ-VlastaNeural" : "cs-CZ-AntoninNeural"
+        case "cy": return gender=="female" ? "cy-GB-NiaNeural" : "cy-GB-AledNeural"
+        case "da": return gender=="female" ? "da-DK-ChristelNeural" : "da-DK-JeppeNeural"    
+	    case "de": return gender=="female" ? "de-DE-KatjaNeural" : "de-DE-BerndNeural"	
+        case "el": return gender=="female" ? "el-GR-AthinaNeural" : "el-GR-NestorasNeural"
+        case "en-US":
+        case "en": return gender=="female" ? "en-US-AriaNeural" : "en-US-AndrewNeural"
+        case "en-GB": return gender=="female" ? "en-GB-SoniaNeural" : "en-GB-RyanNeural"	
+        case "es": return gender=="female" ? "es-ES-ElviraNeural" : "es-ES-AlvaroNeural"
+        case "et": return gender=="female" ? "et-EE-AnuNeural" : "et-EE-KertNeural"
+        case "fa": return gender=="female" ? "fa-IR-DilaraNeural" : "fa-IR-FaridNeural"
+        case "fi": return gender=="female" ? "fi-FI-NooraNeural" : "fi-FI-HarriNeural"
+        case "fr": return gender=="female" ? "fr-FR-DeniseNeural" : "fr-FR-HenriNeural"
+        case "fr-CA": return gender=="female" ? "fr-CA-SylvieNeural" : "fr-CA-JeanNeural"	
+        case "ga": return gender=="female" ? "ga-IE-OrlaNeural" : "ga-IE-ColmNeural"
+        case "gu": return gender=="female" ? "gu-IN-DhwaniNeural" : "gu-IN-NiranjanNeural"
+        case "he": return gender=="female" ? "he-IL-HilaNeural" : "he-IL-AvriNeural"
+        case "hi": return gender=="female" ? "hi-IN-SwaraNeural" : "hi-IN-MadhurNeural"
+        case "hr": return gender=="female" ? "hr-HR-GabrijelaNeural" : "hr-HR-SreckoNeural"
+        case "hu": return gender=="female" ? "hu-HU-NoemiNeural" : "hu-HU-TamasNeural"
+        case "id": return gender=="female" ? "id-ID-GadisNeural" : "id-ID-ArdiNeural"
+        case "is": return gender=="female" ? "is-IS-GudrunNeural" : "is-IS-GunnarNeural"
+        case "it": return gender=="female" ? "it-IT-ElsaNeural" : "it-IT-DiegoNeural"	
+        case "ja": return gender=="female" ? "ja-JP-NanamiNeural" : "ja-JP-KeitaNeural"	
+        case "kk": return gender=="female" ? "kk-KZ-AigulNeural" : "kk-KZ-DauletNeural"
+        case "km": return gender=="female" ? "km-KH-SreymomNeural" : "km-KH-PisethNeural"
+        case "kn": return gender=="female" ? "kn-IN-SapnaNeural" : "kn-IN-GaganNeural"	
+        case "ko": return gender=="female" ? "ko-KR-SunHiNeural" : "ko-KR-InJoonNeural"	
+        case "lo": return gender=="female" ? "lo-LA-KeomanyNeural" : "lo-LA-ChanthavongNeural"
+        case "lv": return gender=="female" ? "lv-LV-EveritaNeural" : "lv-LV-NilsNeural"	
+        case "lt": return gender=="female" ? "lt-LT-OnaNeural" : "lt-LT-LeonasNeural"
+        case "mk": return gender=="female" ? "mk-MK-MarijaNeural" : "mk-MK-AleksandarNeural"
+        case "ml": return gender=="female" ? "ml-IN-SobhanaNeural" : "ml-IN-MidhunNeural"
+        case "mr": return gender=="female" ? "mr-IN-AarohiNeural" : "mr-IN-ManoharNeural"
+        case "ms": return gender=="female" ? "ms-MY-YasminNeural" : "ms-MY-OsmanNeural"
+        case "mt": return gender=="female" ? "mt-MT-GraceNeural" : "mt-MT-JosephNeural"	
+        case "my": return gender=="female" ? "my-MM-NilarNeural" : "my-MM-ThihaNeural"
+        case "nl": return gender=="female" ? "nl-NL-ColetteNeural" : "nl-NL-MaartenNeural"
+        case "nb": return gender=="female" ? "nb-NO-PernilleNeural" : "nb-NO-FinnNeural"
+        case "pl": return gender=="female" ? "pl-PL-ZofiaNeural" : "pl-PL-MarekNeural"	
+        case "ps": return gender=="female" ? "ps-AF-LatifaNeural" : "ps-AF-GulNawazNeural"
+        case "pt-PT": return gender=="female" ? "pt-PT-FernandaNeural" : "pt-PT-DuarteNeural"
+        case "pt": return gender=="female" ? "pt-BR-FranciscaNeural" : "pt-BR-AntonioNeural"
+        case "ro": return gender=="female" ? "ro-RO-AlinaNeural" : "ro-RO-EmilNeural"
+        case "ru": return gender=="female" ? "ru-RU-DariyaNeural" : "ru-RU-DmitryNeural"
+        case "sk": return gender=="female" ? "sk-SK-ViktoriaNeural" : "sk-SK-LukasNeural"
+        case "sl": return gender=="female" ? "sl-SI-PetraNeural" : "sl-SI-RokNeural"	
+        case "sr": return gender=="female" ? "sr-RS-SophieNeural" : "sr-RS-NicholasNeural"
+        case "sv": return gender=="female" ? "sv-SE-SofieNeural" : "sv-SE-MattiasNeural"
+        case "ta": return gender=="female" ? "ta-IN-PallaviNeural" : "ta-IN-ValluvarNeural"	
+        case "te": return gender=="female" ? "te-IN-ShrutiNeural" : "te-IN-MohanNeural"
+        case "th": return gender=="female" ? "th-TH-PremwadeeNeural" : "th-TH-NiwatNeural"	
+        case "tr": return gender=="female" ? "tr-TR-EmelNeural" : "tr-TR-AhmetNeural"
+        case "uk": return gender=="female" ? "uk-UA-PolinaNeural" : "uk-UA-OstapNeural"
+        case "ur": return gender=="female" ? "ur-IN-GulNeural" : "ur-IN-SalmanNeural"
+        case "uz": return gender=="female" ? "uz-UZ-MadinaNeural" : "uz-UZ-SardorNeural"	
+        case "vi": return gender=="female" ? "vi-VN-HoaiMyNeural" : "vi-VN-NamMinhNeural"
+        case "zh-Hans": 	
+        case "zh-CN": return gender=="female" ? "zh-CN-XiaoxiaoNeural" : "zh-CN-YunxiNeural"
+        case "zh-Hant": 	
+        case "zh-TW": return gender=="female" ? "zh-TW-HsiaoChenNeural" : "zh-TW-YunJheNeural"
+        case "zh-HK": 	
+        case "yue": return gender=="female" ? "zh-HK-HiuGaaiNeural" : "zh-HK-WanLungNeural"
+	    default: return ""
+	}
+}
+
 # FIXME!
+# Since 2024.07.09
 function bingTTSUrl(text, tl,
                     ####
                     country, gender, i, group,
                     header, content, isBody) {
+	#the speaking rate of the text
+    rate = "-20%"
+	
+	# <https://github.com/soimort/translate-shell/wiki/Narrator-Selection>
     gender = "female"
     country = NULLSTR
     split(Option["narrator"], group, ",")
@@ -117,28 +203,37 @@ function bingTTSUrl(text, tl,
     else if (tl == "sv") tl = tl "-SE"
     else if (tl == "yue") ;
     else if (tl == "zh") tl = tl "-CN"
-
-    header = "GET " "/tspeak?"                                          \
-        "&language=" tl "&text=" preprocess(text)                       \
-        "&options=" gender "&format=audio%2Fmp3" " HTTP/1.1\r\n"        \
-        "Host: " HttpHost "\r\n"                                        \
-        "Connection: close\r\n"
-    if (Option["user-agent"])
-        header = header "User-Agent: " Option["user-agent"] "\r\n"
-    if (Cookie)
-        header = header "Cookie: " Cookie "\r\n"
-
-    content = NULLSTR; isBody = 0
-    print header |& HttpService
-    while ((HttpService |& getline) > 0) {
-        if (isBody)
-            content = content ? content "\n" $0 : $0
-        else if (length($0) <= 1)
-            isBody = 1
-        #l(sprintf("%4s bytes > %s", length($0), $0))
+    lang = tl
+    if(country=="TW" || country=="zh-TW" || tl=="zh-Hant") {
+        lang = "zh-TW"
+        tl  = "zh-CN"
     }
-    close(HttpService)
+    else if(country=="HK" || country=="zh-HK") {
+        lang = "zh-HK"
+        tl  = "zh-CN"
+    }
+    else if(tl=="zh-Hans") {
+        lang = "zh-CN"
+        tl  = "zh-CN"
+    }
+	
+    #get text to speech voice name
+    vName  = voiceName(lang, gender)
 
+    #print "country: " country
+    #print "tl: " tl
+    #print "lang: " lang
+    #print "gender: " gender
+    #print "Voice: " vName
+    
+	# generate SSML
+	# <https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup>
+    ssml = "<speak version='1.0' xml:lang='" tl "'><voice xml:lang='" tl "' xml:gender='" gender "' name='" vName "'><prosody rate='" rate "'>" text "</prosody></voice></speak>"
+	
+    bingSetup()
+
+    content = postResponse(ssml, "", "", "", "tts")
+	
     if (!TempFile)
         TempFile = getOutput("mktemp")
     printf("%s", content) > TempFile
@@ -159,6 +254,7 @@ function bingWebTranslateUrl(uri, sl, tl, hl,    _sl, _tl) {
     return "https://www.translatetheweb.com/?" "from=" _sl "&to=" _tl "&a=" uri
 }
 
+
 # [OBSOLETE?] Old dictionary API (via HTTP GET).
 function bingRequestUrl(text, sl, tl, hl) {
     return HttpPathPrefix "/translator/api/Dictionary/Lookup?"  \
@@ -169,6 +265,8 @@ function bingRequestUrl(text, sl, tl, hl) {
 function bingPostRequestUrl(text, sl, tl, hl, type) {
     if (type == "lookup")
         return HttpPathPrefix "/tlookupv3"
+    else if (type == "tts") #add by gsyan
+        return HttpPathPrefix "/tfettts" sprintf("?IG=%s&IID=%s", IG, IID)
     #else if (type == "transliterate")
     #    return HttpPathPrefix "/ttransliteratev3"
     else # type == "translate"
@@ -186,11 +284,17 @@ function bingPostRequestUserAgent(text, sl, tl, hl, type) {
 function bingPostRequestBody(text, sl, tl, hl, type) {
     if (type == "lookup")
         return "&text=" quote(text) "&from=" sl "&to=" tl
+    else if (type == "tts") #add by gsyan
+        return "&ssml=" quote(text) "&isVertical=1" BingTokenKey		
     #else if (type == "transliterate")
     #    return "&text=" quote(text) "&language=" sl "&toScript=" "latn"
     else # type == "translate"
         return "&text=" quote(text) "&fromLang=" sl "&to=" tl BingTokenKey
 }
+
+#sl source language
+#tl target language
+#hl host language
 
 # Get the translation of a string.
 function bingTranslate(text, sl, tl, hl,
